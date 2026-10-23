@@ -6,7 +6,7 @@ An interactive, multi-touch implementation of
 > *As-Rigid-As-Possible Shape Manipulation.* ACM SIGGRAPH 2005.
 > https://www-ui.is.s.u-tokyo.ac.jp/~takeo/papers/takeo_siggraph2005.pdf
 
-**Play with it:** <https://alexwarth.github.io/projects/as-rigid-as-possible-shape-manipulation/>
+**Live demo:** <https://alexwarth.github.io/projects/as-rigid-as-possible-shape-manipulation/>
 (best on an iPad or another multi-touch screen; a mouse works too).
 
 Grab a 2D shape with your fingers and move, rotate, stretch and bend it, as in
@@ -47,7 +47,7 @@ can play with. I was able to recreate the examples in the paper and get a
 much better feeling for what works well and what doesn't about that
 approach. Excited about this!
 
-- Alex Warth, Oct. 23, 2026
+Alex Warth, Oct. 23, 2026
 
 ## Running it
 
