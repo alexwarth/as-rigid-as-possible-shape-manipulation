@@ -6,8 +6,8 @@ An interactive, multi-touch implementation of
 > *As-Rigid-As-Possible Shape Manipulation.* ACM SIGGRAPH 2005.
 > https://www-ui.is.s.u-tokyo.ac.jp/~takeo/papers/takeo_siggraph2005.pdf
 
-**Live demo:** <https://alexwarth.github.io/projects/as-rigid-as-possible-shape-manipulation/>
-(best on an iPad or another multi-touch screen; a mouse works too).
+**Live demo:** <https://alexwarth.github.io/projects/as-rigid-as-possible-shape-manipulation/><br>
+(best on an iPad or another multi-touch screen; a mouse works too)
 
 Grab a 2D shape with your fingers and move, rotate, stretch and bend it, as in
 Figure 1 of the paper. The important ideas from the paper live in a small
@@ -38,6 +38,9 @@ could use them to quickly make explorables for other people's work, too. So
 I gave it a shot with Takeo Igarashi's [As-Rigid-As-Possible Shape
 Manipulation](https://cs.brown.edu/people/jhughes/papers/Igarashi-ASM-2005/paper.pdf)
 paper that I really enjoyed but never got around making a version of my own.
+(This is one of our favorites in the
+[Programmable Ink](https://www.inkandswitch.com/ink/) track at
+[Ink & Switch](https://www.inkandswitch.com/)!)
 I told Claude to make a little webpage that I could play with on my iPad,
 with multi-touch support, and (as a bonus) I asked it to write it so that all
 of the interesting stuff in the paper was written as a little library that
@@ -47,7 +50,8 @@ can play with. I was able to recreate the examples in the paper and get a
 much better feeling for what works well and what doesn't about that
 approach. Excited about this!
 
-Alex Warth, Oct. 23, 2026
+Alex Warth @ Ink & Switch<br>
+Oct. 23, 2026
 
 ## Running it
 
