@@ -1,0 +1,59 @@
+# Builds the plaything and publishes the static site into the website repo
+# (alexwarth/alexwarth.github.io) under projects/as-rigid-as-possible-shape-manipulation,
+# so it can be played with at
+# https://alexwarth.github.io/projects/as-rigid-as-possible-shape-manipulation/
+#
+# Needs one secret, WEBSITE_DEPLOY_KEY: the private half of an SSH deploy key
+# that is installed with write access on the website repo.
+name: Deploy demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-demo
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      - name: Push dist/ to alexwarth.github.io
+        env:
+          DEPLOY_KEY: ${{ secrets.WEBSITE_DEPLOY_KEY }}
+          DEST: projects/as-rigid-as-possible-shape-manipulation
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes"
+          git clone --depth 1 git@github.com:alexwarth/alexwarth.github.io.git site
+          rm -rf "site/$DEST"
+          mkdir -p "site/$(dirname "$DEST")"
+          cp -r dist "site/$DEST"
+          cd site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing changed; no deploy needed."; exit 0; fi
+          git commit -m "Deploy as-rigid-as-possible-shape-manipulation demo (${GITHUB_SHA::7})"
+          git push

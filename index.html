@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>As-Rigid-As-Possible Shape Manipulation</title>
+<style>
+  :root {
+    --bg: #f4f1ea; --panel: #fffdf8; --ink: #222; --muted: #6b665c; --accent: #d6303e; --line: #d9d3c6;
+  }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font: 14px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+  #toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 12px;
+    background: var(--panel); border-bottom: 1px solid var(--line); z-index: 2;
+    padding-top: calc(8px + env(safe-area-inset-top)); }
+  #toolbar h1 { font-size: 15px; font-weight: 600; margin: 0 8px 0 0; white-space: nowrap; }
+  #toolbar h1 a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); }
+  .group { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .sep { width: 1px; height: 22px; background: var(--line); margin: 0 4px; }
+  select { min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; color: var(--ink); }
+  button, label.toggle { display: inline-flex; align-items: center; gap: 5px; min-height: 34px; padding: 4px 10px;
+    border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; cursor: pointer; }
+  button:active { background: #eee; }
+  label.toggle input { margin: 0; width: 16px; height: 16px; accent-color: var(--accent); }
+  label.toggle .swatch { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); }
+  label.range { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+  label.range input { width: 110px; }
+  #stats { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #hint { color: var(--muted); width: 100%; font-size: 13px; }
+  #stage { flex: 1; position: relative; min-height: 0; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: block; }
+  input[type=file] { display: none; }
+</style>
+</head>
+<body>
+  <div id="toolbar">
+    <h1><a href="https://www-ui.is.s.u-tokyo.ac.jp/~takeo/papers/takeo_siggraph2005.pdf" target="_blank" rel="noopener">As-Rigid-As-Possible Shape Manipulation</a></h1>
+    <div class="group">
+      <select id="shape">
+        <option value="gingerbread">Gingerbread man (Fig. 2)</option>
+        <option value="frog">Frog (Fig. 14)</option>
+        <option value="whale">Whale (after Fig. 1)</option>
+        <option value="custom">Custom image</option>
+      </select>
+      <button id="load">Load image…</button>
+      <input id="file" type="file" accept="image/*">
+      <button id="reset">Reset shape</button>
+      <button id="clearPins">Clear pins</button>
+    </div>
+    <div class="sep"></div>
+    <div class="group">
+      <label class="toggle"><input type="checkbox" id="showImage" checked> Image</label>
+      <label class="toggle"><input type="checkbox" id="showMesh"> <span class="swatch" style="background:#1d5fbf"></span> Mesh</label>
+      <label class="toggle"><input type="checkbox" id="showRest"> <span class="swatch" style="background:#999"></span> Rest shape</label>
+      <label class="toggle"><input type="checkbox" id="showInter"> <span class="swatch" style="background:#f28c28"></span> Step 1 result</label>
+      <label class="toggle"><input type="checkbox" id="showFitted"> <span class="swatch" style="background:#2e9e6b"></span> Fitted triangles</label>
+      <label class="toggle"><input type="checkbox" id="showHandles" checked> Handles</label>
+      <label class="toggle"><input type="checkbox" id="skirt" checked> Curved outline</label>
+      <label class="toggle" title="Our extension, not in the paper: when parts of the shape overlap, draw the most recently manipulated part on top"><input type="checkbox" id="overlap" checked> Overlap ordering</label>
+      <label class="toggle"><input type="checkbox" id="scaleAdjust" checked> Scale adjustment (step 2)</label>
+    </div>
+    <div class="sep"></div>
+    <label class="range">Mesh density <input type="range" id="density" min="12" max="60" step="1" value="28"></label>
+    <span id="stats"></span>
+    <div id="hint">Drag with one or more fingers (or the mouse) to move, rotate and bend. Tap to pin or unpin a point. Lifting a finger while other handles hold the shape leaves a pin behind.</div>
+  </div>
+  <div id="stage"><canvas id="c"></canvas></div>
+  <script type="module" src="./app/app.ts"></script>
+</body>
+</html>
